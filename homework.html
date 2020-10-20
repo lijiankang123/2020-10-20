@@ -1,0 +1,227 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <meta http-equiv="X-UA-Compatible" content="ie=edge">
+  <title>Document</title>
+  <style>
+    ul{
+      list-style: none;
+    }
+    ul>li{
+      float: left;
+      border: 1px solid black;
+      width: 25px;
+      height: 25px;
+      text-align: center;
+      line-height: 25px;
+    }
+    
+		table{
+			width:400px;
+			border-collapse: collapse;
+			text-align:center;
+		}
+		table>thead{
+			border-bottom:3px solid #aaa
+		}
+		/*表格隔行变色效果*/
+		/*tbody中第一行之后的所有兄弟行加上边框*/
+		/* tbody>tr~tr{
+			border-top:1px solid gray
+		} */
+		/* tbody>tr~tr{
+			border-top: 1px solid gray
+		} */
+		/*偶数行变色*/
+		/* tbody>tr:nth-child(2n){
+			background-color:lightBlue;
+		} */
+		/* tbody>tr:nth-child(2n){
+			background: lightblue;
+		} */
+  </style>
+</head>
+<body>
+  <h2>实现按钮组效果</h2>
+  <ul>
+    <li>1</li>
+    <li>2</li>
+    <li>3</li>
+    <li>4</li>
+  </ul>
+  <script src="js/jquery-1.11.3.js"></script>
+  <script>
+    //左边圆角
+    $("ul>li:first")
+    .css("border-radius","5px 0 0 5px");
+    //右边圆角
+    $("ul>li:last")
+    .css("border-radius","0 5px 5px 0");
+    //去除重复边框
+    $("ul>li:gt(0)")
+    .css("border-left","0") 
+  </script>
+
+<br>
+<br>
+
+  <h1>操作元素的内容和值</h1>
+	    <form action="">
+	    	用户名:<input type="text" name="uname">
+				     	<span></span><br>
+	     	密码:<input type="password" name="upwd">
+				   	<span></span><br>
+	         	<input type="button" value="提交注册信息">
+      </form>
+  <script>
+     //正确时，使用图片:"<img src='img/ok.png'>"
+    //姓名错误时: "<img src='img/err.png'>用户名必须介于3~9位之间!"
+    //密码错误时: "<img src='img/err.png'>密码必须介于6~8位之间!"
+    var $text=$(":text");
+    $text.blur(function(){
+      $this=$(this);
+      var $span=$this.next();
+      var uname=$this.val();
+      if(uname.length>=3&& uname.length<=9){
+        $span.html(`<img src='img/ok.png'>`)
+      }else{
+        $span.html(`<img src='img/err.png'>用户名必须介于3~9位之间!`)
+      }
+    })
+
+    var $psd=$(":password");
+    $psd.blur(function(){
+      var $this=$(this);
+      var $span=$this.next();
+      var upwd=$this.val();
+      if(upwd.length>=6 && upwd.length<=8){
+        $span.html(`<img src='img/ok.png'>`)
+      }else{
+        $span.html(`<img src='img/err.png'>密码必须介于6~8位之间!`)
+      }
+    })
+  </script>
+<hr>
+<br>
+
+
+
+<form>
+		用户名:<input disabled></br><span>*</span>
+		密码:<input type="password" disabled></br><span>*</span>
+		<input type="checkbox">我同意本站的使用条款<br>
+		<input type="submit" value="提交注册信息" disabled/>
+</form>
+<script>
+  //点击单选按钮，同意使用才可以填写信息
+  //1.查找事件触发的元素
+  var $checkbox=$(":checkbox");
+  //2.绑定事件处理函数
+  $checkbox.click(function(){
+    //3.查找要修改的元素
+    var $others=$(":not(:checkbox)");
+    //4.修改元素
+    if(this.checked==true){
+      $others.prop("disabled",false);
+    }else{
+      $others.prop("disabled",true);
+    }
+  })
+</script>
+
+
+
+
+
+<h1>jQuery中的选择器——内容过滤选择器</h1>
+
+  <button>提交订单</button>
+  <button>Submit注册信息</button>
+  <button>马上提交</button>
+  <button>清空重填</button>
+
+ <br>
+  <div class="alert" id="alert1"></div>
+  <br>
+  <div class="alert" id="alert2">
+    第一个警告框
+    <span class="close">×</span>
+  </div>
+  <script src="js/jquery-1.11.3.js"></script>
+  <script>
+     //选择包含"提交"二字的按钮，变为绿色按钮
+      $(":button:contains(提交)")
+      .css("background","green");
+     //选中包含.close按钮的.alert元素，让它们变为红色的警告框
+       $(".alert:has(.close)")
+       .css("background","red");
+     //选中不包含.close按钮的.alert元素，让它们变为绿色的警告框
+      $(".alert:not(:has(.close))")
+      .css("background","green");
+     //选择内容为空的.alert元素，添加红色阴影
+      //  $(".alert:empty")
+      //  .css("box-shadow","-5px 5px 5px red");
+      $(".alert:empty").css("box-shadow","-5px 5px 5px red");
+
+     //选择内容不为空的.alert元素，添加绿色阴影
+      $(".alert:parent")
+      .css("box-shadow","-5px 5px 5px green");
+      // $(".alert:parent").css("box-shadow","-5px 5px 5px green");
+
+  </script>
+<br> <br><br>
+
+
+
+
+<h1>实现表格隔行变色效果</h1>
+	<!--table>(thead>tr>th*4)+(tbody>tr*4>td*4)-->
+	<table>
+		<thead>
+			<tr>
+				<th>#</th>
+				<th>First Name</th>
+				<th>Last Name</th>
+				<th>User Name</th>
+			</tr>
+		</thead>
+		<tbody>
+			<tr>
+				<td>1</td>
+				<td>亮</td>
+				<td>成</td>
+				<td>@liang</td>
+			</tr>
+			<tr>
+				<td>2</td>
+				<td>然</td>
+				<td>李</td>
+				<td>@ran</td>
+			</tr>
+			<tr>
+				<td>3</td>
+				<td>东</td>
+				<td>张</td>
+				<td>@dong</td>
+			</tr>
+			<tr>
+				<td>4</td>
+				<td>华</td>
+				<td>吴</td>
+				<td>@hua</td>
+			</tr>
+		</tbody>
+  </table>
+  <script>
+      /*表格隔行变色效果*/
+    /*tbody中第一行之后的所有兄弟行加上边框*/
+     $("tbody>tr:gt(0)")
+     .css("border-top","1px solid black");
+    /*偶数行变色*/
+    $("tbody>tr:odd")
+      .css("background-color","lightBlue")
+  </script>
+</body>
+</html>
